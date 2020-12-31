@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: oaktree-jupyter
+  labels:
+    app: oaktree-jupyter
+
+spec:
+  serviceAccountName: spark-driver
+  
+  securityContext:
+    fsGroup: 777
+  
+  containers:
+  - name: jupyter-test-pod
+    image: code.oak-tree.tech:5005/courseware/oak-tree/dataops-examples/spark-k8s-jupyter
+    imagePullPolicy: Always
+    command: ["jupyter", "lab", "--ip", "0.0.0.0"]
+    volumeMounts:
+    - name: storage-config-volume
+      mountPath: /home/jovyan/.jupyter/jupyter_notebook_config.py
+      subPath: storage_path.py
+  
+  volumes:
+  - name: storage-config-volume
+    configMap:
+      name: jupyter-notebook-config
+  
+  restartPolicy: Always

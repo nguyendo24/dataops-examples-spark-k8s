@@ -1,0 +1,7 @@
+FROM code.oak-tree.tech:5005/courseware/oak-tree/dataops-examples/spark301-k8s-polyglot:latest
+USER root
+
+# Install Dask
+RUN pip3 install dask[complete]
+
+USER jovyan
